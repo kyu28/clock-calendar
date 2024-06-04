@@ -71,3 +71,6 @@ WSL 2.1.5.0
 WSLg 1.0.60  
 OpenJDK 17.0.11  
 Maven 3.8.7  
++ Windows 11 Professional 23H2 AMD64  
+Oracle Java JDK 19.0.2  
+Maven 3.9.5  
