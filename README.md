@@ -74,3 +74,22 @@ Maven 3.8.7
 + Windows 11 Professional 23H2 AMD64  
 Oracle Java JDK 19.0.2  
 Maven 3.9.5  
+
+## 项目结构
+```
+docs                                # 文档，包含选题PDF原件
+src
+└── main
+    ├── java
+    │   └── szu
+    │       └── dky
+    │           └── clockcalendar
+    │               ├── service     # 所有服务组件
+    │               │   ├── beep
+    │               │   └── router
+    │               ├── util        # 工具类
+    │               └── view        # 视图类
+    └── resources
+pom.xml                             # Maven构建文件
+README.md                           # 本自述文件
+```
