@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>时钟日历</title>
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .container {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 100vw;
+        height: 90vh;
+    }
+    .card {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        padding: 20px;
+        margin: 10px;
+        width: 45%;
+        height: 80%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .header {
+        font-size: 1.5vw;
+        color: #333;
+        margin-bottom: 20px;
+    }
+    .clock {
+        font-size: 3vw;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .calendar {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .calendar th, .calendar td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+        font-size: 1vw;
+    }
+    .calendar th {
+        background-color: #f0f0f0;
+    }
+    .today {
+        background-color: #e0f7fa;
+    }
+    .button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 1.2vw;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    .form-control {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+    .form-control input, .form-control button {
+        padding: 10px;
+        font-size: 1vw;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .controls {
+        margin-top: auto;
+    }
+    .todo-list {
+        margin: 20px 0;
+        font-size: 1.2vw;
+    }
+    .todo-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+    .todo-item span, .todo-item .date {
+        flex: 1;
+    }
+    .add-todo-form {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+</style>
+<script>
+    function updateClock() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+    }
+    setInterval(updateClock, 1000);
+
+    function setManualTime() {
+        const timeInput = document.getElementById('manual-time').value;
+        const timeParts = timeInput.split(':');
+        const now = new Date();
+        now.setHours(parseInt(timeParts[0]));
+        now.setMinutes(parseInt(timeParts[1]));
+        now.setSeconds(parseInt(timeParts[2]));
+        document.getElementById('clock').textContent = timeInput;
+    }
+
+    function setManualDate() {
+        const dateInput = document.getElementById('manual-date').value;
+        alert('Date set to: ' + dateInput); // Placeholder for actual date handling
+    }
+
+    function importHolidays() {
+        alert('Import holidays feature not implemented.'); // Placeholder for actual import functionality
+    }
+
+    function addTodo() {
+        const todoText = document.getElementById('todo-text').value;
+        const todoDate = document.getElementById('todo-date').value;
+        const todoList = document.querySelector('.todo-list');
+        const newTodo = document.createElement('div');
+        newTodo.className = 'todo-item';
+        newTodo.innerHTML = `<span>${todoText}</span><span class="date">${todoDate}</span><button class="button">Done</button>`;
+        todoList.appendChild(newTodo);
+    }
+</script>
+</head>
+<body onload="updateClock()">
+<div class="container">
+    <div class="card">
+        <div class="header">实时时钟</div>
+        <div id="clock" class="clock"></div>
+        <div class="controls">
+            <div class="form-control">
+                <input type="time" id="manual-time">
+                <button class="button" onclick="setManualTime()">设置时间</button>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="header">2024年5月</div>
+        <table class="calendar">
+            <tr>
+                <th>日</th>
+                <th>一</th>
+                <th>二</th>
+                <th>三</th>
+                <th>四</th>
+                <th>五</th>
+                <th>六</th>
+            </tr>
+            <tr>
+                <td></td><td></td><td></td><td></td><td>1</td><td>2</td><td>3</td>
+            </tr>
+            <tr>
+                <td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td class="today">9</td><td>10</td>
+            </tr>
+            <tr>
+                <td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td>
+            </tr>
+            <tr>
+                <td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td>
+            </tr>
+            <tr>
+                <td>25</td><td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td>31</td>
+            </tr>
+        </table>
+        <div class="add-todo-form">
+            <input type="text" id="todo-text" placeholder="Add new task">
+            <input type="date" id="todo-date">
+            <button class="button" onclick="addTodo()">Add Todo</button>
+        </div>
+        <div class="todo-list">
+            <div class="todo-item">
+                <span>Check emails</span>
+                <span class="date">2024-05-10</span>
+                <button class="button">Done</button>
+            </div>
+            <div class="todo-item">
+                <span>Meeting at 3 PM</span>
+                <span class="date">2024-05-09</span>
+                <button class="button">Done</button>
+            </div>
+        </div>
+        <div class="controls">
+            <button class="button" onclick="importHolidays()">导入节假日</button>
+            <div class="form-control">
+                <input type="date" id="manual-date">
+                <button class="button" onclick="setManualDate()">设置日期</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

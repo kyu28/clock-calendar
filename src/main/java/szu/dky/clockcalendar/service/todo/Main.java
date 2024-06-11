@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.io.IOException;
 import dev.webview.webview_java.bridge.JavascriptObject;
 
 public class Main extends JavascriptObject {
@@ -12,7 +13,11 @@ public class Main extends JavascriptObject {
     private static final String DEFAULT_PATH = "./todo.json";
 
     public void load(String path) {
-        todoList = Files.readString(Path.of(htmlPath));
+        try {
+            String serializedList = Files.readString(Path.of(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static JavascriptObject getService() {
@@ -24,7 +29,7 @@ public class Main extends JavascriptObject {
     }
 
     public String getTodoList() {
-        return todoList;
+        return "";
     }
 
 }

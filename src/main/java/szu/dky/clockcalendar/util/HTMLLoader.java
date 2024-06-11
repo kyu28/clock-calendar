@@ -17,7 +17,7 @@ public class HTMLLoader {
 
     public static String loadFromResource(String htmlPath) throws IOException {
         InputStream in = App.class.getResourceAsStream(htmlPath);
-        InputStreamReader isr = new InputStreamReader(in);
+        InputStreamReader isr = new InputStreamReader(in, "UTF-8");
         BufferedReader br = new BufferedReader(isr);
         StringBuilder html = new StringBuilder("");
         String line = null;

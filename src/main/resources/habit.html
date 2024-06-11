@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>习惯打卡</title>
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .container {
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start;
+        width: 100vw;
+        height: 90vh;
+    }
+    .card {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        padding: 20px;
+        margin: 10px;
+        width: 45%;
+        height: 80%;
+        overflow: auto;
+    }
+    .header {
+        font-size: 1.5vw;
+        color: #333;
+        margin-bottom: 20px;
+    }
+    .habit {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+    .habit-name {
+        color: #666;
+        font-size: 1.2vw;
+    }
+    .habit-progress {
+        color: #4CAF50;
+        font-size: 1.2vw;
+    }
+    .calendar {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .calendar th, .calendar td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+        font-size: 1vw;
+    }
+    .calendar th {
+        background-color: #f0f0f0;
+    }
+    .today {
+        background-color: #e0f7fa;
+    }
+    .button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 1.2vw;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    .add-habit-form {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+    .add-habit-form input, .add-habit-form select {
+        padding: 10px;
+        margin-right: 10px;
+        font-size: 1vw;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .summary {
+        margin-top: 20px;
+        font-size: 1.2vw;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="header">我的习惯</div>
+        <div class="habit">
+            <span class="habit-name">阅读书籍 (每日)</span>
+            <span class="habit-progress">0次</span>
+            <button class="button">打卡</button>
+        </div>
+        <div class="habit">
+            <span class="habit-name">晨跑 (每周)</span>
+            <span class="habit-progress">0次</span>
+            <button class="button">打卡</button>
+        </div>
+        <div class="habit">
+            <span class="habit-name">日语学习 (每日)</span>
+            <span class="habit-progress">0%</span>
+            <button class="button">打卡</button>
+        </div>
+        <div class="habit">
+            <span class="habit-name">编码练习 (每日)</span>
+            <span class="habit-progress">0次</span>
+            <button class="button">打卡</button>
+        </div>
+        <div class="add-habit-form">
+            <input type="text" placeholder="添加新习惯">
+            <select>
+                <option value="daily">每日</option>
+                <option value="weekly">每周</option>
+                <option value="monthly">每月</option>
+            </select>
+            <input type="date" placeholder="开始日期">
+            <button class="button">添加</button>
+        </div>
+    </div>
+    <div class="card">
+        <div class="header">2024年5月</div>
+        <table class="calendar">
+            <tr>
+                <th>日</th>
+                <th>一</th>
+                <th>二</th>
+                <th>三</th>
+                <th>四</th>
+                <th>五</th>
+                <th>六</th>
+            </tr>
+            <tr>
+                <td></td><td></td><td></td><td></td><td>1</td><td>2</td><td>3</td>
+            </tr>
+            <tr>
+                <td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td class="today">9</td><td>10</td>
+            </tr>
+            <tr>
+                <td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td>
+            </tr>
+            <tr>
+                <td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td>
+            </tr>
+            <tr>
+                <td>25</td><td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td>31</td>
+            </tr>
+        </table>
+        <div class="summary">
+            <p>总打卡次数: 0</p>
+            <p>连续打卡天数: 0</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

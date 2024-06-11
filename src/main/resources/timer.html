@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>计时器与番茄钟</title>
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .container {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 100vw;
+        height: 90vh;
+    }
+    .card {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        padding: 20px;
+        margin: 10px;
+        width: 45%;
+        height: 80%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .header {
+        font-size: 1.5vw;
+        color: #333;
+        margin-bottom: 20px;
+    }
+    .timer-display {
+        font-size: 3vw;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 1.2vw;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    .form-control {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+    .form-control input, .form-control button {
+        padding: 10px;
+        font-size: 1vw;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .controls {
+        margin-top: auto;
+    }
+    .pomodoro-stats {
+        text-align: center;
+        font-size: 1.2vw;
+    }
+</style>
+<script>
+    let timer = null;
+    let countdown = 0;
+    let pomodoroCount = 0;
+    let isBreak = false;
+
+    function startTimer(duration, isPomodoro = false) {
+        clearInterval(timer);
+        countdown = duration;
+        timer = setInterval(() => {
+            if (countdown <= 0) {
+                clearInterval(timer);
+                if (isPomodoro) {
+                    pomodoroCount++;
+                    document.getElementById('pomodoro-count').textContent = `Completed Pomodoros: ${pomodoroCount}`;
+                    // Decide break length
+                    let breakTime = pomodoroCount % 4 === 0 ? 15 * 60 : 5 * 60;
+                    document.getElementById('next-break').textContent = `Next break: ${breakTime / 60} minutes`;
+                    alert(`Time for a break! Next break: ${breakTime / 60} minutes`);
+                } else {
+                    alert('Break is over!');
+                }
+                document.getElementById('timer-display').textContent = '0:00';
+                return;
+            }
+            const minutes = Math.floor(countdown / 60);
+            const seconds = countdown % 60;
+            document.getElementById('timer-display').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            countdown--;
+        }, 1000);
+    }
+
+    function stopTimer() {
+        clearInterval(timer);
+        document.getElementById('timer-display').textContent = '0:00';
+    }
+
+    function startPomodoro() {
+        startTimer(25 * 60, true);
+    }
+</script>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="header">计时器</div>
+        <div id="timer-display" class="timer-display">0:00</div>
+        <div class="form-control">
+            <input type="number" id="time-input" placeholder="Enter time in minutes">
+            <button class="button" onclick="startTimer(parseInt(document.getElementById('time-input').value) * 60)">Start Timer</button>
+        </div>
+        <button class="button" onclick="stopTimer()">Stop Timer</button>
+    </div>
+    <div class="card">
+        <div class="header">番茄钟</div>
+        <div id="timer-display" class="timer-display">0:00</div>
+        <div class="pomodoro-stats">
+            <div id="pomodoro-count">Completed Pomodoros: 0</div>
+            <div id="next-break">Next break: 5 minutes</div>
+        </div>
+        <div class="controls">
+            <button class="button" onclick="startPomodoro()">Start Pomodoro</button>
+            <button class="button" onclick="stopTimer()">Stop</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
