@@ -16,29 +16,10 @@ public class App {
         UI ui = UI.getInstance();
 
         ServiceGateway gateway = ServiceGateway.getInstance();
-        ui.bridge.defineObject("Beep", gateway.getService(ServiceName.BEEP));
         ui.bridge.defineObject("Router", gateway.getService(ServiceName.ROUTER));
-        ui.bridge.defineObject("Test", new TestObject());
 
         ui.run();
         ui.close();
-    }
-
-    public static class TestObject extends JavascriptObject {
-
-        @JavascriptValue(allowSet = false, watchForMutate = true)
-        public long nanoTime = -1;
-        {
-            AsyncTask.create(() -> {
-                try {
-                    while (true) {
-                        this.nanoTime = System.nanoTime();
-                        Thread.sleep(100);
-                    }
-                } catch (InterruptedException ignored) {}
-            });
-        }
-
     }
 
 }

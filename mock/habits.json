@@ -1,0 +1,22 @@
+[
+    {
+        "name": "habit1",
+        "freq": "DAILY",
+        "checkins": [
+            "2024-06-12",
+            "2024-06-11"
+        ],
+        "chain": 2,
+        "startAt": "2024-06-11"
+    },
+    {
+        "name": "habit2",
+        "freq": "WEEKLY",
+        "checkins": [
+            "2024-06-12",
+            "2024-06-05"
+        ],
+        "chain": 2,
+        "startAt": "2024-06-05"
+    }
+]

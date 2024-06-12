@@ -72,48 +72,69 @@
     }
     .pomodoro-stats {
         text-align: center;
-        font-size: 1.2vw;
+        font-size: 1.5vw; /* Increased font size for better visibility */
+    }
+    .status {
+        font-size: 1.5vw;
+        color: #4CAF50;
+        text-align: center;
+        margin-top: 10px;
     }
 </style>
 <script>
-    let timer = null;
+    let pomodoroTimer = null;
+    let countdownTimer = null;
     let countdown = 0;
     let pomodoroCount = 0;
     let isBreak = false;
 
-    function startTimer(duration, isPomodoro = false) {
-        clearInterval(timer);
+    function startCountdown(duration) {
+        clearInterval(countdownTimer);
         countdown = duration;
-        timer = setInterval(() => {
+        countdownTimer = setInterval(() => {
             if (countdown <= 0) {
-                clearInterval(timer);
-                if (isPomodoro) {
-                    pomodoroCount++;
-                    document.getElementById('pomodoro-count').textContent = `Completed Pomodoros: ${pomodoroCount}`;
-                    // Decide break length
-                    let breakTime = pomodoroCount % 4 === 0 ? 15 * 60 : 5 * 60;
-                    document.getElementById('next-break').textContent = `Next break: ${breakTime / 60} minutes`;
-                    alert(`Time for a break! Next break: ${breakTime / 60} minutes`);
-                } else {
-                    alert('Break is over!');
-                }
-                document.getElementById('timer-display').textContent = '0:00';
+                clearInterval(countdownTimer);
+                alert('Countdown is over!');
+                document.getElementById('countdown-display').textContent = '0:00';
                 return;
             }
             const minutes = Math.floor(countdown / 60);
             const seconds = countdown % 60;
-            document.getElementById('timer-display').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('countdown-display').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
             countdown--;
         }, 1000);
     }
 
-    function stopTimer() {
-        clearInterval(timer);
-        document.getElementById('timer-display').textContent = '0:00';
+    function stopCountdown() {
+        clearInterval(countdownTimer);
+        document.getElementById('countdown-display').textContent = '0:00';
     }
 
     function startPomodoro() {
-        startTimer(25 * 60, true);
+        let pomodoroTime = 25 * 60; // 25 minutes for Pomodoro
+        clearInterval(pomodoroTimer);
+        pomodoroTimer = setInterval(() => {
+            if (pomodoroTime <= 0) {
+                clearInterval(pomodoroTimer);
+                pomodoroCount++;
+                document.getElementById('pomodoro-count').textContent = `Completed Pomodoros: ${pomodoroCount}`;
+                let breakTime = pomodoroCount % 4 === 0 ? 25 * 60 : 5 * 60;
+                document.getElementById('next-break').textContent = `Next break: ${breakTime / 60} minutes`;
+                alert('Time for a break!');
+                startTimer(breakTime, false); // Automatically start break
+                document.getElementById('pomodoro-display').textContent = '0:00';
+                return;
+            }
+            const minutes = Math.floor(pomodoroTime / 60);
+            const seconds = pomodoroTime % 60;
+            document.getElementById('pomodoro-display').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            pomodoroTime--;
+        }, 1000);
+    }
+
+    function stopPomodoro() {
+        clearInterval(pomodoroTimer);
+        document.getElementById('pomodoro-display').textContent = '0:00';
     }
 </script>
 </head>
@@ -121,23 +142,24 @@
 <div class="container">
     <div class="card">
         <div class="header">计时器</div>
-        <div id="timer-display" class="timer-display">0:00</div>
+        <div id="countdown-display" class="timer-display">0:00</div>
         <div class="form-control">
             <input type="number" id="time-input" placeholder="Enter time in minutes">
-            <button class="button" onclick="startTimer(parseInt(document.getElementById('time-input').value) * 60)">Start Timer</button>
+            <button class="button" onclick="startCountdown(parseInt(document.getElementById('time-input').value) * 60)">Start Countdown</button>
         </div>
-        <button class="button" onclick="stopTimer()">Stop Timer</button>
+        <button class="button" onclick="stopCountdown()">Stop Countdown</button>
     </div>
     <div class="card">
         <div class="header">番茄钟</div>
-        <div id="timer-display" class="timer-display">0:00</div>
+        <div id="pomodoro-display" class="timer-display">0:00</div>
+        <div class="status" id="status">Ready to start</div>
         <div class="pomodoro-stats">
             <div id="pomodoro-count">Completed Pomodoros: 0</div>
             <div id="next-break">Next break: 5 minutes</div>
         </div>
         <div class="controls">
             <button class="button" onclick="startPomodoro()">Start Pomodoro</button>
-            <button class="button" onclick="stopTimer()">Stop</button>
+            <button class="button" onclick="stopPomodoro()">Stop</button>
         </div>
     </div>
 </div>

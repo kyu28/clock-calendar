@@ -46,12 +46,13 @@
     .calendar {
         width: 100%;
         border-collapse: collapse;
+        margin: auto; /* Center the calendar */
+        font-size: 1.2vw; /* Increase font size */
     }
     .calendar th, .calendar td {
         border: 1px solid #ddd;
-        padding: 8px;
+        padding: 10px; /* Increase padding */
         text-align: center;
-        font-size: 1vw;
     }
     .calendar th {
         background-color: #f0f0f0;
@@ -87,6 +88,8 @@
         margin-top: auto;
     }
     .todo-list {
+        overflow-y: auto;
+        max-height: 150px; /* Fixed height */
         margin: 20px 0;
         font-size: 1.2vw;
     }
