@@ -43,6 +43,8 @@
 必需：  
 + [Maven](https://maven.apache.org/download.cgi)  
 + [webview/webview_java](https://github.com/webview/webview_java)  
++ [alibaba/fastjson2](https://github.com/alibaba/fastjson2)
++ [Apache Commons Net](https://commons.apache.org/proper/commons-net/)
 
 ### 额外软件包依赖
 Windows:  
@@ -85,11 +87,14 @@ src
     │       └── dky
     │           └── clockcalendar
     │               ├── service     # 所有服务组件
-    │               │   ├── beep
-    │               │   └── router
+    │               │   ├── countdown
+    │               │   ├── datetime
+    │               │   ├── habit
+    │               │   ├── router
+    │               │   └── todo
     │               ├── util        # 工具类
     │               └── view        # 视图类
-    └── resources
+    └── resources                   # UI的HTML实现文件
 pom.xml                             # Maven构建文件
 README.md                           # 本自述文件
 ```

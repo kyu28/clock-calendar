@@ -16,6 +16,8 @@ public class App {
         UI ui = UI.getInstance();
 
         ServiceGateway gateway = ServiceGateway.getInstance();
+        
+        ui.bridge.defineObject("Todo", gateway.getService(ServiceName.TODO));
         ui.bridge.defineObject("Router", gateway.getService(ServiceName.ROUTER));
 
         ui.run();
