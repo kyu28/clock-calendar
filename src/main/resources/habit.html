@@ -11,27 +11,28 @@
         background-color: #f4f4f4;
         height: 100vh;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
     }
     .container {
         display: flex;
         justify-content: space-around;
-        align-items: flex-start;
+        align-items: center;
         width: 100vw;
-        height: 90vh;
+        height: 85vh; /* Adjusted height to make space for the new buttons */
     }
     .card {
         background: white;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        padding: 20px;
-        margin: 10px;
-        width: 45%;
-        height: 80%;
-        overflow: auto;
+        border-radius: 1vw;
+        box-shadow: 0 0.4vw 0.8vw rgba(0,0,0,0.1);
+        padding: 2vw;
+        margin: 1vw;
+        width: 45vw;
+        height: 75vh;
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
     }
     .header {
         font-size: 1.5vw;
@@ -96,6 +97,14 @@
     .summary {
         margin-top: 20px;
         font-size: 1.2vw;
+    }
+    .bottom-buttons {
+        display: flex;
+        justify-content: center;
+        margin-top: 2vw;
+    }
+    .bottom-buttons .button {
+        margin: 0 1vw;
     }
 </style>
 <script>
@@ -172,6 +181,10 @@
             <!-- Habit details will be displayed here -->
         </div>
     </div>
+</div>
+<div class="bottom-buttons">
+    <button class="button" onclick="route('/habit.html')">习惯打卡</button>
+    <button class="button" onclick="route('/timer.html')">倒计时</button>
 </div>
 </body>
 </html>

@@ -31,18 +31,18 @@ public class Main extends JavascriptObject {
 
     public Main() {
         todoList = loadTodos(DEFAULT_PATH);
-        System.out.println(getTodoList());
     }
 
     @JavascriptFunction
     public String getTodoList() {
         StringBuilder htmlBuilder = new StringBuilder();
 
-        for (Todo todo : todoList) {
+        for (int i = 0; i < todoList.size(); i++) {
+            Todo todo = todoList.get(i);
             htmlBuilder.append("<div class=\"todo-item\">\n")
                        .append("  <span>").append(todo.task).append("</span>\n")
                        .append("  <span class=\"date\">").append(todo.getDate()).append("</span>\n")
-                       .append("  <button class=\"button\">Done</button>\n")
+                       .append("  <button class=\"button\" onclick=\"doneTodo(").append(i).append(")\">完成</button>\n")
                        .append("</div>\n");
         }
 
@@ -56,6 +56,7 @@ public class Main extends JavascriptObject {
         } catch (Exception e) {
             return "";
         }
+        saveTodo(DEFAULT_PATH);
         return getTodoList();
     }
 
@@ -66,7 +67,17 @@ public class Main extends JavascriptObject {
         } catch (Exception e) {
             return "";
         }
+        saveTodo(DEFAULT_PATH);
         return getTodoList();
+    }
+
+    public void saveTodo(String path) {
+        String json = JSON.toJSONString(todoList);
+        try {
+            Files.write(Path.of(path), json.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

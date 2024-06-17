@@ -21,13 +21,15 @@ public class Main extends JavascriptObject {
     }
 
     @JavascriptFunction
-    public void setDate(String dateString) {
+    public String setDate(String dateString) {
         this.calendar.setDate(dateString);
+        return this.calendar.getDate();
     }
 
     @JavascriptFunction
-    public void importCalendar(String path) {
+    public String importCalendar(String path) {
         this.calendar.importCalendar(path);
+        return this.calendar.getDate();
     }
 
     @JavascriptFunction
@@ -36,8 +38,8 @@ public class Main extends JavascriptObject {
     }
 
     @JavascriptFunction
-    public void setTime(int hour, int minute, int second) {
-        this.clock.setTime(hour, minute, second);
+    public void setTime(Integer hour, Integer minute) {
+        this.clock.setTime(hour, minute, 0);
     }
 
     @JavascriptFunction

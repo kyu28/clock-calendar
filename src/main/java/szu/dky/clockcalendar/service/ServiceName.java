@@ -4,6 +4,7 @@ import java.lang.Class;
 
 public enum ServiceName {
     ROUTER(szu.dky.clockcalendar.service.router.Main.class),
+    DATETIME(szu.dky.clockcalendar.service.datetime.Main.class),
     TODO(szu.dky.clockcalendar.service.todo.Main.class);
 
     private final Class<?> SERVICE_CLASS;

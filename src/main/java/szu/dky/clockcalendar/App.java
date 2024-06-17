@@ -18,6 +18,7 @@ public class App {
         ServiceGateway gateway = ServiceGateway.getInstance();
         
         ui.bridge.defineObject("Todo", gateway.getService(ServiceName.TODO));
+        ui.bridge.defineObject("Datetime", gateway.getService(ServiceName.DATETIME));
         ui.bridge.defineObject("Router", gateway.getService(ServiceName.ROUTER));
 
         ui.run();
