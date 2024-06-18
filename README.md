@@ -29,8 +29,7 @@
 + 枚举
 + 注解
 + 重载
-+ 抽象类
-+ 骨架类
++ 反射
 + Lambda
 + Stream
   
@@ -50,51 +49,74 @@
 Windows:  
 无  
 Linux:
-```
-# Debian
-apt install libwebkit2gtk-4.0-37
-```
 ## 构建项目
-```
+### Debug构建
+`config/DataConfig.java`中的配置为Release配置，可能出现配置文件载入写入失败问题  
+```sh
 mvn clean package
 ```
 
-## 运行项目
+### Release构建
+```sh
+mvn clean package
+mkdir build
+cp target/clockcalendar-*-jar-with-dependencies.jar build/clockcalendar.jar
+mkdir build/data
+cp data/* build/data
 ```
+
+## 运行项目
+### Debug构建
+`config/DataConfig.java`中的配置为Release配置，可能出现配置文件载入写入失败问题  
+```sh
 java -jar target/clockcalendar-版本号-jar-with-dependencies.jar
+```
+
+### Release构建
+```sh
+cd build
+java -jar clockcalendar.jar
+```
+
+### 构建程序文件结构
+```
+build/
+├── data/               # 数据文件夹（路径可在config/DataConfig.java更改）
+│   ├── calendar.json   # 自定义日历文件
+│   ├── habits.json     # 习惯数据
+│   ├── pomodoro.json   # 番茄钟数据
+│   └── todo.json       # 待办数据
+└── clockcalendar.jar   # 程序本体
 ```
 
 在以下环境进行过测试  
 + Windows 11 Professional 22H2 AMD64  
 Oracle Java JDK 17.0.11  
 Maven 3.9.7  
-+ Debian GNU/Linux 12 (bookworm) WSL2 on Windows 11 Professional 22H2 AMD64  
-WSL 2.1.5.0  
-WSLg 1.0.60  
-OpenJDK 17.0.11  
-Maven 3.8.7  
 + Windows 11 Professional 23H2 AMD64  
 Oracle Java JDK 19.0.2  
 Maven 3.9.5  
 
 ## 项目结构
 ```
-docs                                # 文档，包含选题PDF原件
-src
-└── main
-    ├── java
-    │   └── szu
-    │       └── dky
-    │           └── clockcalendar
-    │               ├── service     # 所有服务组件
-    │               │   ├── countdown
-    │               │   ├── datetime
-    │               │   ├── habit
-    │               │   ├── router
-    │               │   └── todo
-    │               ├── util        # 工具类
-    │               └── view        # 视图类
-    └── resources                   # UI的HTML实现文件
+docs/                               # 文档，包含选题PDF原件
+data/                               # 程序的数据实例文件
+src/
+└── main/
+    ├── java/
+    │   └── szu/
+    │       └── dky/
+    │           └── clockcalendar/
+    │               ├── config/     # 配置类
+    │               ├── service/    # 所有服务组件
+    │               │   ├── countdown/  # 倒计时与番茄钟模块
+    │               │   ├── datetime/   # 时钟日历模块
+    │               │   ├── habit/      # 习惯打卡模块
+    │               │   ├── router/     # 页面路由模块
+    │               │   └── todo/       # 待办模块
+    │               ├── util/       # 工具类
+    │               └── view/       # 视图类
+    └── resources/                  # UI的HTML实现文件
 pom.xml                             # Maven构建文件
 README.md                           # 本自述文件
 ```

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>习惯打卡</title>
@@ -20,7 +20,7 @@
         justify-content: space-around;
         align-items: center;
         width: 100vw;
-        height: 85vh; /* Adjusted height to make space for the new buttons */
+        height: 85vh;
     }
     .card {
         background: white;
@@ -37,31 +37,42 @@
     .header {
         font-size: 1.5vw;
         color: #333;
-        margin-bottom: 20px;
+        margin-bottom: 2vh;
     }
     .habit {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 10px;
+        margin-bottom: 1vh;
         cursor: pointer;
+        align-items: center;
+    }
+    .habit-list {
+        height: 75vh;
     }
     .habit-name {
         color: #666;
-        font-size: 1.2vw;
+        font-size: 2vh;
     }
     .habit-progress {
         color: #4CAF50;
-        font-size: 1.2vw;
+        font-size: 2vh;
+    }
+    .habit-start-date {
+        color: black;
+        font-size: 2vh;
     }
     .calendar {
         width: 100%;
         border-collapse: collapse;
+        margin: auto;
+        font-size: 2vh;
+        table-layout: fixed;
+        height: 30vh;
     }
     .calendar th, .calendar td {
-        border: 1px solid #ddd;
-        padding: 8px;
+        border: 0.1vw solid #ddd;
+        padding: 0.4vw;
         text-align: center;
-        font-size: 1vw;
     }
     .calendar th {
         background-color: #f0f0f0;
@@ -69,33 +80,37 @@
     .today {
         background-color: #e0f7fa;
     }
+    .offday {
+        color: red;
+    }
     .button {
         background-color: #4CAF50;
         color: white;
         border: none;
-        padding: 10px 20px;
+        padding: 0 1vw;
         text-align: center;
         text-decoration: none;
         display: inline-block;
-        font-size: 1.2vw;
-        margin: 4px 2px;
+        font-size: 2vh;
+        margin: 0.4vw 0.2vw;
         cursor: pointer;
-        border-radius: 5px;
+        border-radius: 0.5vw;
+        height: 4vh;
     }
     .add-habit-form {
         display: flex;
         justify-content: space-between;
-        margin-top: 20px;
+        margin-top: 2vh;
     }
     .add-habit-form input, .add-habit-form select {
-        padding: 10px;
-        margin-right: 10px;
+        padding: 1vh;
+        margin-right: 1vh;
         font-size: 1vw;
-        border: 1px solid #ccc;
-        border-radius: 5px;
+        border: 0.1vw solid #ccc;
+        border-radius: 0.5vw;
     }
     .summary {
-        margin-top: 20px;
+        margin-top: 2vh;
         font-size: 1.2vw;
     }
     .bottom-buttons {
@@ -108,82 +123,87 @@
     }
 </style>
 <script>
-    function updateHabitDetails(habitName, habitProgress) {
-        const summaryElement = document.querySelector('.summary');
-        summaryElement.innerHTML = `<p>Selected Habit: ${habitName}</p><p>Progress: ${habitProgress}</p>`;
+    function route(page) {
+        Router.to(page);
+    }
+
+    function getDate() {
+        Datetime.getDate().then((result) => {
+            let resultObj = JSON.parse(result);
+            let tokens = resultObj.date.split("-");
+            document.getElementById("header").innerHTML = tokens[0] + "年" + tokens[1] + "月";
+            document.getElementById("calendar").innerHTML = resultObj.html;
+        });
+    }
+
+    function getHabits() {
+        Habit.getHabits().then((result) =>
+            document.getElementById("habit-list").innerHTML = result
+        );
+    }
+
+    function checkin(index) {
+        Habit.checkin(index).then((result) =>
+            document.getElementById("habit-list").innerHTML = result
+        );
+    }
+
+    function getStastics(index) {
+        Habit.getStastics(index).then((result) =>
+            document.getElementById("summary").innerHTML = result
+        );
+    }
+
+    function addHabit() {
+        const habitName = document.getElementById('habit-name').value;
+        const habitFreq = document.getElementById('habit-freq').value;
+        const startDate = document.getElementById('start-date').value;
+        Habit.addHabit(habitName, habitFreq, startDate).then((result) =>
+            document.getElementById("habit-list").innerHTML = result
+        );
+    }
+
+    function noticeCheckin() {
+        Habit.getShouldCheckinToday().then((result) => {
+            if (result.length() > 0)
+                alert("今日应打卡：\n" + result);
+        });
+    }
+
+    function init() {
+        getHabits();
+        getDate();
+        noticeCheckin();
     }
 </script>
 </head>
-<body>
+<body onload="init()">
 <div class="container">
     <div class="card">
         <div class="header">我的习惯</div>
-        <div class="habit" onclick="updateHabitDetails('阅读书籍', '0次')">
-            <span class="habit-name">阅读书籍 (每日)</span>
-            <span class="habit-progress">0次</span>
-            <button class="button">打卡</button>
-        </div>
-        <div class="habit" onclick="updateHabitDetails('晨跑', '0次')">
-            <span class="habit-name">晨跑 (每周)</span>
-            <span class="habit-progress">0次</span>
-            <button class="button">打卡</button>
-        </div>
-        <div class="habit" onclick="updateHabitDetails('日语学习', '0%')">
-            <span class="habit-name">日语学习 (每日)</span>
-            <span class="habit-progress">0%</span>
-            <button class="button">打卡</button>
-        </div>
-        <div class="habit" onclick="updateHabitDetails('编码练习', '0次')">
-            <span class="habit-name">编码练习 (每日)</span>
-            <span class="habit-progress">0次</span>
-            <button class="button">打卡</button>
+        <div class="habit-list" id="habit-list">
         </div>
         <div class="add-habit-form">
-            <input type="text" placeholder="添加新习惯">
-            <select>
-                <option value="daily">每日</option>
-                <option value="weekly">每周</option>
-                <option value="monthly">每月</option>
+            <input type="text" placeholder="添加新习惯" id="habit-name">
+            <select id="habit-freq">
+                <option value="DAILY">每日</option>
+                <option value="WEEKLY">每周</option>
+                <option value="MONTHLY">每月</option>
             </select>
-            <input type="date" placeholder="开始日期">
-            <button class="button">添加</button>
+            <input type="date" placeholder="开始日期" id="start-date">
+            <button class="button" onclick="addHabit()">添加</button>
         </div>
     </div>
     <div class="card">
-        <div class="header">2024年5月</div>
-        <table class="calendar">
-            <tr>
-                <th>日</th>
-                <th>一</th>
-                <th>二</th>
-                <th>三</th>
-                <th>四</th>
-                <th>五</th>
-                <th>六</th>
-            </tr>
-            <tr>
-                <td></td><td></td><td></td><td></td><td>1</td><td>2</td><td>3</td>
-            </tr>
-            <tr>
-                <td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td class="today">9</td><td>10</td>
-            </tr>
-            <tr>
-                <td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td>
-            </tr>
-            <tr>
-                <td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td>
-            </tr>
-            <tr>
-                <td>25</td><td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td>31</td>
-            </tr>
+        <div class="header" id="header">年月</div>
+        <table class="calendar" id="calendar">
         </table>
-        <div class="summary">
-            <!-- Habit details will be displayed here -->
+        <div class="summary" id="summary">
         </div>
     </div>
 </div>
 <div class="bottom-buttons">
-    <button class="button" onclick="route('/habit.html')">习惯打卡</button>
+    <button class="button" onclick="route('/clock-calendar.html')">时钟日历</button>
     <button class="button" onclick="route('/timer.html')">倒计时</button>
 </div>
 </body>

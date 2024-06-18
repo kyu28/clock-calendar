@@ -8,4 +8,14 @@ public class PomodoroRecord {
 
     @JSONField
     public int count;
+
+    public PomodoroRecord date(String date) {
+        this.date = date;
+        return this;
+    }
+
+    public PomodoroRecord count(int count) {
+        this.count = count;
+        return this;
+    }
 }

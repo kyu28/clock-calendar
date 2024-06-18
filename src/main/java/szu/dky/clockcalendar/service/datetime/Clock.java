@@ -75,8 +75,12 @@ public class Clock {
         }
         if (hour == 24) {
             hour = 0;
-            Main.calendar.dateForward();
+            DatetimeAPI.calendar.dateForward();
         }
+    }
+
+    public void shutdown() {
+        executorService.shutdownNow();
     }
 
 }

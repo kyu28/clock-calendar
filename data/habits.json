@@ -1,0 +1,18 @@
+[
+    {
+        "chain": 0,
+        "checkins": [],
+        "freq": "WEEKLY",
+        "name": "阅读",
+        "startDate": "2024-06-14"
+    },
+    {
+        "chain": 1,
+        "checkins": [
+            "2024-06-18 13:21:33.631"
+        ],
+        "freq": "DAILY",
+        "name": "算法",
+        "startDate": "2024-06-18"
+    }
+]

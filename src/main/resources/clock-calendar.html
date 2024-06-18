@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>时钟日历</title>
@@ -23,7 +23,7 @@
         justify-content: space-around;
         align-items: center;
         width: 100vw;
-        height: 85vh; /* Adjusted height to make space for the new buttons */
+        height: 85vh;
     }
     .card {
         background: white;
@@ -55,14 +55,14 @@
     .calendar {
         width: 100%;
         border-collapse: collapse;
-        margin: auto; /* Center the calendar */
-        font-size: 2vh; /* Increase font size */
+        margin: auto;
+        font-size: 2vh;
         table-layout: fixed;
-        height: 30vh; /* Adjusted height */
+        height: 30vh;
     }
     .calendar th, .calendar td {
         border: 0.1vw solid #ddd;
-        padding: 0.4vw; /* Increase padding */
+        padding: 0.4vw;
         text-align: center;
     }
     .calendar th {
@@ -103,7 +103,7 @@
     .todo-item {
         display: flex;
         justify-content: space-between;
-        align-items: center; /* Vertically center the items */
+        align-items: center;
         margin-bottom: 1vw;
     }
     .todo-item span, .todo-item .date {
@@ -189,7 +189,6 @@
 
     function getDate() {
         Datetime.getDate().then((result) => {
-            console.log(result);
             let resultObj = JSON.parse(result);
             let tokens = resultObj.date.split("-");
             document.getElementById("header").innerHTML = tokens[0] + "年" + tokens[1] + "月";

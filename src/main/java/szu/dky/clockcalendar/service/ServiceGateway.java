@@ -33,4 +33,16 @@ public class ServiceGateway {
         return this.services.get(serviceName);
     }
 
+    public void shutdownAll() {
+        for (JavascriptObject service : services.values()) {
+            try {
+                Class<?> serviceClass = service.getClass();
+                Method shutdownMethod = serviceClass.getMethod("shutdown");
+                shutdownMethod.invoke(service, null);
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

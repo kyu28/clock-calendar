@@ -4,16 +4,19 @@ import java.util.List;
 import java.util.ArrayList;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
 import java.io.IOException;
 import dev.webview.webview_java.bridge.JavascriptObject;
 import dev.webview.webview_java.bridge.JavascriptFunction;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONReader;
+import szu.dky.clockcalendar.view.UI;
+import szu.dky.clockcalendar.config.DataConfig;
 
-public class Main extends JavascriptObject {
+public class TodoAPI extends JavascriptObject {
 
     private List<Todo> todoList;
-    private static final String DEFAULT_PATH = "../mock/todo.json";
+    private static final String DEFAULT_PATH = "/todo.json";
 
     public List<Todo> loadTodos(String path) {
         try {
@@ -26,11 +29,11 @@ public class Main extends JavascriptObject {
     }
 
     public static JavascriptObject getService() {
-        return new Main();
+        return new TodoAPI();
     }
 
-    public Main() {
-        todoList = loadTodos(DEFAULT_PATH);
+    public TodoAPI() {
+        todoList = loadTodos(DataConfig.DATA_DIR + DEFAULT_PATH);
     }
 
     @JavascriptFunction
@@ -56,7 +59,7 @@ public class Main extends JavascriptObject {
         } catch (Exception e) {
             return "";
         }
-        saveTodo(DEFAULT_PATH);
+        saveTodo(DataConfig.DATA_DIR + DEFAULT_PATH);
         return getTodoList();
     }
 
@@ -65,19 +68,23 @@ public class Main extends JavascriptObject {
         try {
             todoList.add(new Todo().task(task).deadline(deadlineStr));
         } catch (Exception e) {
-            return "";
+            e.printStackTrace();
+            UI.getInstance().eval("alert('参数非法')");
         }
-        saveTodo(DEFAULT_PATH);
+        saveTodo(DataConfig.DATA_DIR + DEFAULT_PATH);
         return getTodoList();
     }
 
     public void saveTodo(String path) {
         String json = JSON.toJSONString(todoList);
         try {
-            Files.write(Path.of(path), json.getBytes());
+            Files.write(Path.of(path), json.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    public void shutdown() {
+    }
+    
 }

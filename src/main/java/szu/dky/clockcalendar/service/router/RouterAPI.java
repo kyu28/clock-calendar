@@ -6,10 +6,10 @@ import szu.dky.clockcalendar.view.UI;
 import szu.dky.clockcalendar.util.*;
 import java.io.IOException;
 
-public class Main extends JavascriptObject {
+public class RouterAPI extends JavascriptObject {
 
     public static JavascriptObject getService() {
-        return new Main();
+        return new RouterAPI();
     }
 
     @JavascriptFunction
@@ -20,6 +20,9 @@ public class Main extends JavascriptObject {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void shutdown() {
     }
 
 }

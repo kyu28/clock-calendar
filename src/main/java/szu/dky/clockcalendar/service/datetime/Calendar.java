@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.annotation.JSONField;
+import szu.dky.clockcalendar.config.DataConfig;
 
 public class Calendar {
 
@@ -37,7 +38,7 @@ public class Calendar {
         offDays = new HashMap<>();
         workingDays = new HashMap<>();
         this.monthDays = loadMonth();
-        importCalendar("../mock/calendar.json");
+        importCalendar(DataConfig.DATA_DIR + "/calendar.json");
     }
 
     public String getDate() {
@@ -203,6 +204,9 @@ public class Calendar {
         }
 
         return htmlBuilder.toString();
+    }
+
+    public void shutdown() {
     }
 
 }

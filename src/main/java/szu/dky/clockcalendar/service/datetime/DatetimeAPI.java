@@ -3,16 +3,13 @@ package szu.dky.clockcalendar.service.datetime;
 import dev.webview.webview_java.bridge.JavascriptObject;
 import dev.webview.webview_java.bridge.JavascriptFunction;
 
-public class Main extends JavascriptObject {
+public class DatetimeAPI extends JavascriptObject {
 
     static final Calendar calendar = new Calendar();
     static final Clock clock = new Clock();
 
     public static JavascriptObject getService() {
-        return new Main();
-    }
-
-    public Main() {
+        return new DatetimeAPI();
     }
 
     @JavascriptFunction
@@ -45,6 +42,11 @@ public class Main extends JavascriptObject {
     @JavascriptFunction
     public void syncTime(String ntpServer) {
         this.clock.syncTime(ntpServer);
+    }
+
+    public void shutdown() {
+        this.calendar.shutdown();
+        this.clock.shutdown();
     }
 
 }
