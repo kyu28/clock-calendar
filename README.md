@@ -45,10 +45,6 @@
 + [alibaba/fastjson2](https://github.com/alibaba/fastjson2)
 + [Apache Commons Net](https://commons.apache.org/proper/commons-net/)
 
-### 额外软件包依赖
-Windows:  
-无  
-Linux:
 ## 构建项目
 ### Debug构建
 `config/DataConfig.java`中的配置为Release配置，可能出现配置文件载入写入失败问题  
