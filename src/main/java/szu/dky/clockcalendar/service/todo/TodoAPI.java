@@ -57,7 +57,6 @@ public class TodoAPI extends JavascriptObject {
         try {
             todoList.remove(index);
         } catch (Exception e) {
-            return "";
         }
         saveTodo(DataConfig.DATA_DIR + DEFAULT_PATH);
         return getTodoList();

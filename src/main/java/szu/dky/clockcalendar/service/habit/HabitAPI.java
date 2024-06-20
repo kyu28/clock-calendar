@@ -82,7 +82,10 @@ public class HabitAPI extends JavascriptObject {
 
     @JavascriptFunction
     public String deleteHabit(int index) {
-        habits.remove(index);
+        try {
+            habits.remove(index);
+        } catch (Exception e) {
+        }
         saveHabits(DataConfig.DATA_DIR + DEFAULT_PATH);
         return getHabits();
     }

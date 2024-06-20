@@ -165,7 +165,7 @@
 
     function noticeCheckin() {
         Habit.getShouldCheckinToday().then((result) => {
-            if (result.length() > 0)
+            if (result.length > 0)
                 alert("今日应打卡：\n" + result);
         });
     }
