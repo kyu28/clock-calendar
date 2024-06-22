@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.DayOfWeek;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
 import java.io.IOException;
 import java.util.Set;
 import java.util.HashSet;
@@ -68,7 +69,7 @@ public class Calendar {
             public DateObject[] workingDays;
         };
         try {
-            String json = Files.readString(Path.of(path));
+            String json = Files.readString(Path.of(path), StandardCharsets.UTF_8);
             OffDaySetting offDaySetting = JSON.parseObject(json, OffDaySetting.class);
             Set<DateObject> offDays = Arrays.stream(offDaySetting.offDays).collect(Collectors.toSet());
             Set<DateObject> workingDays = Arrays.stream(offDaySetting.workingDays).collect(Collectors.toSet());

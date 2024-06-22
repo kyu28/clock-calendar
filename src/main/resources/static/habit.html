@@ -123,13 +123,30 @@
     }
 </style>
 <script>
+    const URL = "http://localhost:8080";
+
     function route(page) {
-        Router.to(page);
+        // Router.to(page);
+        fetch(URL + "/router/to", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: page
+        }).then((response) => response.text()).then((response) => {
+            window.location.href = response;
+        });
     }
 
     function getDate() {
-        Datetime.getDate().then((result) => {
-            let resultObj = JSON.parse(result);
+        // Datetime.getDate().then((result) => {
+        //     let resultObj = JSON.parse(result);
+        //     let tokens = resultObj.date.split("-");
+        //     document.getElementById("header").innerHTML = tokens[0] + "年" + tokens[1] + "月";
+        //     document.getElementById("calendar").innerHTML = resultObj.html;
+        // });
+        fetch(URL + "/datetime/getDate").then((response) => response.text()).then((response) => {
+            let resultObj = JSON.parse(response);
             let tokens = resultObj.date.split("-");
             document.getElementById("header").innerHTML = tokens[0] + "年" + tokens[1] + "月";
             document.getElementById("calendar").innerHTML = resultObj.html;
@@ -137,36 +154,74 @@
     }
 
     function getHabits() {
-        Habit.getHabits().then((result) =>
-            document.getElementById("habit-list").innerHTML = result
-        );
+        // Habit.getHabits().then((result) =>
+        //     document.getElementById("habit-list").innerHTML = result
+        // );
+        fetch(URL + "/habit/getHabits").then((response) => response.text()).then((response) => {
+            document.getElementById("habit-list").innerHTML = response;
+        });
     }
 
     function checkin(index) {
-        Habit.checkin(index).then((result) =>
-            document.getElementById("habit-list").innerHTML = result
-        );
+        // Habit.checkin(index).then((result) =>
+        //     document.getElementById("habit-list").innerHTML = result
+        // );
+        fetch(URL + "/habit/checkin", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: index
+        }).then((response) => response.text()).then((response) => {
+            document.getElementById("habit-list").innerHTML = response;
+        });
     }
 
     function getStastics(index) {
-        Habit.getStastics(index).then((result) =>
-            document.getElementById("summary").innerHTML = result
-        );
+        // Habit.getStastics(index).then((result) =>
+        //     document.getElementById("summary").innerHTML = result
+        // );
+        fetch(URL + "/habit/getStastics", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: index
+        }).then((response) => response.text()).then((response) => {
+            document.getElementById("summary").innerHTML = response;
+        });
     }
 
     function addHabit() {
         const habitName = document.getElementById('habit-name').value;
         const habitFreq = document.getElementById('habit-freq').value;
         const startDate = document.getElementById('start-date').value;
-        Habit.addHabit(habitName, habitFreq, startDate).then((result) =>
-            document.getElementById("habit-list").innerHTML = result
-        );
+        // Habit.addHabit(habitName, habitFreq, startDate).then((result) =>
+        //     document.getElementById("habit-list").innerHTML = result
+        // );
+        fetch(URL + "/habit/addHabit", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: habitName,
+                freq: habitFreq,
+                startDate: startDate
+            })
+        }).then((response) => response.text()).then((response) => {
+            document.getElementById("habit-list").innerHTML = response;
+        });
     }
 
     function noticeCheckin() {
-        Habit.getShouldCheckinToday().then((result) => {
-            if (result.length > 0)
-                alert("今日应打卡：\n" + result);
+        // Habit.getShouldCheckinToday().then((result) => {
+        //     if (result.length > 0)
+        //         alert("今日应打卡：\n" + result);
+        // });
+        fetch(URL + "/habit/getShouldCheckinToday").then((response) => response.text()).then((response) => {
+            if (response.length > 0)
+                alert("今日应打卡：\n" + response);
         });
     }
 

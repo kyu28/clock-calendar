@@ -125,8 +125,11 @@
     }
 </style>
 <script>
+    const URL = "http://localhost:8080";
+
     function getTime() {
-        Datetime.getTime().then((result) => document.getElementById('clock').textContent = result);
+        // Datetime.getTime().then((result) => document.getElementById('clock').textContent = result);
+        fetch(URL + "/datetime/getTime").then((response) => response.text()).then((result) => document.getElementById('clock').textContent = result);
     }
     setInterval(getTime, 1000);
 
@@ -135,12 +138,26 @@
         const timeParts = timeInput.split(':');
         let hour = parseInt(timeParts[0], 10);
         let minute = parseInt(timeParts[1], 10);
-        Datetime.setTime(hour, minute);
+        // Datetime.setTime(hour, minute);
+        fetch(URL + "/datetime/setTime", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({hour: hour, minute: minute})
+        });
     }
 
     function setDate() {
         const dateInput = document.getElementById('manual-date').value;
-        Datetime.setDate(dateInput).then((result) => {
+        // Datetime.setDate(dateInput).then((result) => {
+        fetch(URL + "/datetime/setDate", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: dateInput.toString()
+        }).then((response) => response.text()).then((result) => {
             console.log(result);
             let resultObj = JSON.parse(result);
             let tokens = resultObj.date.split("-");
@@ -151,7 +168,14 @@
 
     function importCalendar() {
         path = prompt("请输入文件路径");
-        Datetime.importCalendar(path).then((result) => {
+        // Datetime.importCalendar(path).then((result) => {
+        fetch(URL + "/datetime/importCalendar", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: path
+        }).then((response) => response.text()).then((result) => {
             console.log(result);
             let resultObj = JSON.parse(result);
             let tokens = resultObj.date.split("-");
@@ -164,31 +188,70 @@
         const todoText = document.getElementById('todo-text').value;
         const todoDate = document.getElementById('todo-date').value;
         const todoList = document.querySelector('.todo-list');
-        Todo.addTodo(todoText, todoDate).then((result) => {
+        // Todo.addTodo(todoText, todoDate).then((result) => {
+        //     todoList.innerHTML = result;
+        // });
+        fetch(URL + "/todo/addTodo", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({task: todoText, deadline: todoDate})
+        }).then((response) => response.text()).then((result) => {
             todoList.innerHTML = result;
         });
     }
 
     function doneTodo(index) {
-        Todo.doneTodo(index).then((result) => {
+        // Todo.doneTodo(index).then((result) => {
+        //     const todoList = document.querySelector('.todo-list');
+        //     todoList.innerHTML = result;
+        // });
+        fetch(URL + "/todo/doneTodo", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(index)
+        }).then((response) => response.text())
+        .then((result) => {
             const todoList = document.querySelector('.todo-list');
             todoList.innerHTML = result;
         });
     }
 
     function getTodos() {
-        Todo.getTodoList().then((result) => {
+        // Todo.getTodoList().then((result) => {
+        //     const todoList = document.querySelector('.todo-list');
+        //     todoList.innerHTML = result;
+        // });
+        fetch(URL + "/todo/getTodoList").then((response) => response.text()).then((result) => {
             const todoList = document.querySelector('.todo-list');
             todoList.innerHTML = result;
         });
     }
 
     function syncWithTimeServer() {
-        Datetime.syncTime("time.tencent.com");
+        // Datetime.syncTime("time.tencent.com");
+        fetch(URL + "/datetime/syncTime", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: "time.tencent.com"
+        });
     }
 
     function getDate() {
-        Datetime.getDate().then((result) => {
+        // Datetime.getDate().then((result) => {
+        //     let resultObj = JSON.parse(result);
+        //     let tokens = resultObj.date.split("-");
+        //     document.getElementById("header").innerHTML = tokens[0] + "年" + tokens[1] + "月";
+        //     document.getElementById("calendar").innerHTML = resultObj.html;
+        // });
+        fetch(URL + "/datetime/getDate")
+        .then((response) => response.text())
+        .then((result) => {
             let resultObj = JSON.parse(result);
             let tokens = resultObj.date.split("-");
             document.getElementById("header").innerHTML = tokens[0] + "年" + tokens[1] + "月";
@@ -197,7 +260,16 @@
     }
 
     function route(page) {
-        Router.to(page);
+        // Router.to(page);
+        fetch(URL + "/router/to", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: page
+        }).then((response) => response.text()).then((response) => {
+            window.location.href = response;
+        });
     }
 
     function init() {

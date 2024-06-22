@@ -39,7 +39,8 @@ public class UI extends Webview {
         this.setSize(800, 600);
 
         try {
-            this.setHTML(HTMLLoader.loadFromResource("/clock-calendar.html"));
+            // this.setHTML(HTMLLoader.loadFromResource("/clock-calendar.html"));
+            this.loadURL("http://localhost:8080/clock-calendar.html");
         } catch (Exception e) {
             e.printStackTrace();
             return;

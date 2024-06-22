@@ -43,19 +43,20 @@
 + [webview/webview_java](https://github.com/webview/webview_java)  
 + [alibaba/fastjson2](https://github.com/alibaba/fastjson2)
 + [Apache Commons Net](https://commons.apache.org/proper/commons-net/)
++ [spring-projects/spring-boot](https://github.com/spring-projects/spring-boot)
 
 ## 构建项目
 ### Debug构建
 `config/DataConfig.java`中的配置为Release配置，可能出现配置文件载入写入失败问题  
 ```sh
-mvn clean package
+mvn clean package spring-boot:repackage
 ```
 
 ### Release构建
 ```sh
-mvn clean package
+mvn clean package spring-boot:repackage
 mkdir build
-cp target/clockcalendar-*-jar-with-dependencies.jar build/clockcalendar.jar
+cp target/clockcalendar-*.jar build/clockcalendar.jar
 mkdir build/data
 cp data/* build/data
 ```
@@ -64,7 +65,7 @@ cp data/* build/data
 ### Debug构建
 `config/DataConfig.java`中的配置为Release配置，可能出现配置文件载入写入失败问题  
 ```sh
-java -jar target/clockcalendar-版本号-jar-with-dependencies.jar
+java -jar target/clockcalendar-版本号.jar
 ```
 
 ### Release构建

@@ -12,7 +12,12 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONReader;
 import szu.dky.clockcalendar.view.UI;
 import szu.dky.clockcalendar.config.DataConfig;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
 public class TodoAPI extends JavascriptObject {
 
     private List<Todo> todoList;
@@ -36,6 +41,7 @@ public class TodoAPI extends JavascriptObject {
         todoList = loadTodos(DataConfig.DATA_DIR + DEFAULT_PATH);
     }
 
+    @GetMapping("/todo/getTodoList")
     @JavascriptFunction
     public String getTodoList() {
         StringBuilder htmlBuilder = new StringBuilder();
@@ -52,8 +58,9 @@ public class TodoAPI extends JavascriptObject {
         return htmlBuilder.toString();
     }
 
+    @PostMapping("/todo/doneTodo")
     @JavascriptFunction
-    public String doneTodo(int index) {
+    public String doneTodo(@RequestBody int index) {
         try {
             todoList.remove(index);
         } catch (Exception e) {
@@ -62,10 +69,13 @@ public class TodoAPI extends JavascriptObject {
         return getTodoList();
     }
 
+    @PostMapping("/todo/addTodo")
     @JavascriptFunction
-    public String addTodo(String task, String deadlineStr) {
+    // public String addTodo(@RequestBody String task, @RequestBody String deadlineStr) {
+    public String addTodo(@RequestBody Todo todo) {
         try {
-            todoList.add(new Todo().task(task).deadline(deadlineStr));
+            // todoList.add(new Todo().task(task).deadline(deadlineStr));
+            todoList.add(todo);
         } catch (Exception e) {
             e.printStackTrace();
             UI.getInstance().eval("alert('参数非法')");

@@ -14,7 +14,12 @@ import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONReader;
 import szu.dky.clockcalendar.view.UI;
 import szu.dky.clockcalendar.config.DataConfig;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
 public class HabitAPI extends JavascriptObject {
 
     List<Habit> habits;
@@ -38,6 +43,7 @@ public class HabitAPI extends JavascriptObject {
         return new ArrayList<Habit>();
     }
 
+    @GetMapping("/habit/getHabits")
     @JavascriptFunction
     public String getHabits() {
         StringBuilder htmlBuilder = new StringBuilder();
@@ -68,8 +74,18 @@ public class HabitAPI extends JavascriptObject {
         return htmlBuilder.toString();
     }
 
+    private static class HabitParams {
+        public String name;
+        public String freq;
+        public String startDate;
+    }
+
+    @PostMapping("/habit/addHabit")
     @JavascriptFunction
-    public String addHabit(String name, String freq, String startDate) {
+    public String addHabit(@RequestBody HabitParams params) {
+        String name = params.name;
+        String freq = params.freq;
+        String startDate = params.startDate;
         try {
             habits.add(new Habit().name(name).freq(freq).startDate(startDate));
             saveHabits(DataConfig.DATA_DIR + DEFAULT_PATH);
@@ -80,8 +96,9 @@ public class HabitAPI extends JavascriptObject {
         return getHabits();
     }
 
+    @PostMapping("/habit/deleteHabit")
     @JavascriptFunction
-    public String deleteHabit(int index) {
+    public String deleteHabit(@RequestBody int index) {
         try {
             habits.remove(index);
         } catch (Exception e) {
@@ -90,8 +107,9 @@ public class HabitAPI extends JavascriptObject {
         return getHabits();
     }
 
+    @PostMapping("/habit/checkin")
     @JavascriptFunction
-    public String checkin(int index) {
+    public String checkin(@RequestBody int index) {
         Habit habit = habits.get(index);
         Date today = new Date();
         Calendar calendar = Calendar.getInstance();
@@ -172,8 +190,9 @@ public class HabitAPI extends JavascriptObject {
         return getHabits();
     }
 
+    @PostMapping("/habit/getStastics")
     @JavascriptFunction
-    public String getStastics(int index) {
+    public String getStastics(@RequestBody int index) {
         Habit habit = habits.get(index);
         StringBuilder htmlBuilder = new StringBuilder();
         htmlBuilder.append("<p>习惯：").append(habit.name).append("</p>\n");
@@ -182,6 +201,7 @@ public class HabitAPI extends JavascriptObject {
         return htmlBuilder.toString();
     }
 
+    @GetMapping("/habit/getShouldCheckinToday")
     @JavascriptFunction
     public String getShouldCheckinToday() {
         StringBuilder noticeBuilder = new StringBuilder();

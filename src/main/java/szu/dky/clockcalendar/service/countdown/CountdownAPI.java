@@ -18,7 +18,12 @@ import java.util.Calendar;
 import szu.dky.clockcalendar.util.Beeper;
 import szu.dky.clockcalendar.view.UI;
 import szu.dky.clockcalendar.config.DataConfig;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
 public class CountdownAPI extends JavascriptObject {
 
     private Timer pomodoroTimer = new Timer();
@@ -39,11 +44,13 @@ public class CountdownAPI extends JavascriptObject {
         this.historyPomodoros = loadPomodoros(DataConfig.DATA_DIR + DEFAULT_PATH);
     }
 
+    @PostMapping("/countdown/getHistoryPomodoros")
     @JavascriptFunction
-    public String getHistoryPomodoros(String path) {
+    public String getHistoryPomodoros(@RequestBody String path) {
         return JSON.toJSONString(historyPomodoros);
     }
 
+    @GetMapping("/countdown/startPomodoro")
     @JavascriptFunction
     public void startPomodoro() {
         if (pomodoroTask != null) {
@@ -81,6 +88,7 @@ public class CountdownAPI extends JavascriptObject {
         pomodoroTimer.schedule(pomodoroTask, duration);
     }
 
+    @GetMapping("/countdown/getPomodoroStatus")
     @JavascriptFunction
     public String getPomodoroStatus() {
         long remainingSec = (pomodoroEndTime - System.currentTimeMillis()) / 1000;
@@ -91,12 +99,14 @@ public class CountdownAPI extends JavascriptObject {
         return JSON.toJSONString(Map.of("status", status, "remainingSec", remainingSec, "nextBreak", ((phase + 1) / 2 == 3) ? 25 : 5));
     }
 
+    @GetMapping("/countdown/getPomodoroCount")
     @JavascriptFunction
     public int getPomodoroCount() {
         String today = getCurrentDate();
         return historyPomodoros.getOrDefault(today, 0);
     }
 
+    @GetMapping("/countdown/stopPomodoro")
     @JavascriptFunction
     public void stopPomodoro() {
         if (pomodoroTask != null) {
@@ -108,8 +118,9 @@ public class CountdownAPI extends JavascriptObject {
         phase = 0;
     }
 
+    @PostMapping("/countdown/startCountdown")
     @JavascriptFunction
-    public void startCountdown(int seconds) {
+    public void startCountdown(@RequestBody int seconds) {
         if (seconds <= 0) {
             UI.getInstance().eval("alert('非法时长')");
             return;
@@ -134,6 +145,7 @@ public class CountdownAPI extends JavascriptObject {
         countdownTimer.schedule(countdownTask, ms);
     }
 
+    @GetMapping("/countdown/stopCountdown")
     @JavascriptFunction
     public void stopCountdown() {
         if (countdownTask != null) {
@@ -144,6 +156,7 @@ public class CountdownAPI extends JavascriptObject {
         }
     }
 
+    @GetMapping("/countdown/getCountdownStatus")
     @JavascriptFunction
     public String getCountdownStatus() {
         long remainingSec = (countdownEndTime - System.currentTimeMillis()) / 1000;

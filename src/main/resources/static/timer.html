@@ -97,14 +97,35 @@
     }
 </style>
 <script>
+    var URL = "http://localhost:8080";
     var pomodoroPoll = null;
     var countdownPoll = null;
 
     function startCountdown(duration) {
-        if (pomodoroPoll != null)
+        if (countdownPoll != null)
             clearInterval(countdownPoll);
-        Countdown.startCountdown(duration);
-        Countdown.getCountdownStatus().then((result) => {
+        // Countdown.startCountdown(duration);
+        // Countdown.getCountdownStatus().then((result) => {
+        //     let obj = JSON.parse(result);
+        //     let eta = obj.remainingSec;
+        //     const min = Math.floor(eta / 60);
+        //     let sec = eta % 60;
+        //     if (sec < 10)
+        //         sec = "0" + sec;
+        //     document.getElementById("countdown-display").innerHTML = min + ":" + sec;
+        // });
+        fetch(URL + "/countdown/startCountdown", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: duration
+        });
+        fetch(URL + "/countdown/getCountdownStatus", {
+            method: 'GET'
+        }).then((response) => {
+            return response.text();
+        }).then((result) => {
             let obj = JSON.parse(result);
             let eta = obj.remainingSec;
             const min = Math.floor(eta / 60);
@@ -114,7 +135,11 @@
             document.getElementById("countdown-display").innerHTML = min + ":" + sec;
         });
         countdownPoll = setInterval(() => {
-            Countdown.getCountdownStatus().then((result) => {
+            fetch(URL + "/countdown/getCountdownStatus", {
+                method: 'GET'
+            }).then((response) => {
+                return response.text();
+            }).then((result) => {
                 let obj = JSON.parse(result);
                 let eta = obj.remainingSec;
                 const min = Math.floor(eta / 60);
@@ -128,16 +153,35 @@
 
     function stopCountdown() {
         clearInterval(countdownPoll);
-        Countdown.stopCountdown();
+        // Countdown.stopCountdown();
+        fetch(URL + "/countdown/stopCountdown");
         document.getElementById('countdown-display').textContent = '0:00';
     }
 
     function startPomodoro() {
         if (pomodoroPoll != null)
             clearInterval(pomodoroPoll);
-        Countdown.startPomodoro();
-        Countdown.getPomodoroStatus().then((result) => {
-            console.log(result);
+        // Countdown.startPomodoro();
+        // Countdown.getPomodoroStatus().then((result) => {
+        //     console.log(result);
+        //     let obj = JSON.parse(result);
+        //     let status = obj.status;
+        //     document.getElementById("status").innerHTML = status;
+        //     let nextBreak = obj.nextBreak;
+        //     document.getElementById("next-break").innerHTML = "下次休息长度：" + nextBreak + " 分钟";
+        //     let eta = obj.remainingSec;
+        //     const min = Math.floor(eta / 60);
+        //     let sec = eta % 60;
+        //     if (sec < 10)
+        //         sec = "0" + sec;
+        //     document.getElementById("pomodoro-display").innerHTML = min + ":" + sec;
+        // });
+        fetch(URL + "/countdown/startPomodoro");
+        fetch(URL + "/countdown/getPomodoroStatus", {
+            method: 'GET'
+        }).then((response) => {
+            return response.text();
+        }).then((result) => {
             let obj = JSON.parse(result);
             let status = obj.status;
             document.getElementById("status").innerHTML = status;
@@ -151,8 +195,25 @@
             document.getElementById("pomodoro-display").innerHTML = min + ":" + sec;
         });
         pomodoroPoll = setInterval(() => {
-            Countdown.getPomodoroStatus().then((result) => {
-                console.log(result);
+            // Countdown.getPomodoroStatus().then((result) => {
+            //     console.log(result);
+            //     let obj = JSON.parse(result);
+            //     let status = obj.status;
+            //     document.getElementById("status").innerHTML = status;
+            //     let nextBreak = obj.nextBreak;
+            //     document.getElementById("next-break").innerHTML = "下次休息长度：" + nextBreak + " 分钟";
+            //     let eta = obj.remainingSec;
+            //     const min = Math.floor(eta / 60);
+            //     let sec = eta % 60;
+            //     if (sec < 10)
+            //         sec = "0" + sec;
+            //     document.getElementById("pomodoro-display").innerHTML = min + ":" + sec;
+            // });
+            fetch(URL + "/countdown/getPomodoroStatus", {
+                method: 'GET'
+            }).then((response) => {
+                return response.text();
+            }).then((result) => {
                 let obj = JSON.parse(result);
                 let status = obj.status;
                 document.getElementById("status").innerHTML = status;
@@ -171,19 +232,36 @@
     function stopPomodoro() {
         if (pomodoroPoll != null)
             clearInterval(pomodoroPoll);
-        Countdown.stopPomodoro();
+        // Countdown.stopPomodoro();
+        fetch(URL + "/countdown/stopPomodoro");
         document.getElementById('pomodoro-display').textContent = '0:00';
         document.getElementById("status").innerHTML = "未开始"
     }
 
     function route(page) {
-        Router.to(page);
+        // Router.to(page);
+        fetch(URL + "/router/to", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: page
+        }).then((response) => response.text()).then((response) => {
+            window.location.href = response;
+        });
     }
 
     function init() {
-        Countdown.getPomodoroCount().then((result) => 
-            document.getElementById("pomodoro-count").innerHTML = "完成番茄数：" + result
-        );
+        // Countdown.getPomodoroCount().then((result) => 
+        //     document.getElementById("pomodoro-count").innerHTML = "完成番茄数：" + result
+        // );
+        fetch(URL + "/countdown/getPomodoroCount", {
+            method: 'GET'
+        }).then((response) => {
+            return response.text();
+        }).then((result) => {
+            document.getElementById("pomodoro-count").innerHTML = "完成番茄数：" + result;
+        });
     }
 </script>
 </head>
