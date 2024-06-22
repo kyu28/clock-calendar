@@ -101,7 +101,7 @@
     var countdownPoll = null;
 
     function startCountdown(duration) {
-        if (pomodoroPoll != null)
+        if (countdownPoll != null)
             clearInterval(countdownPoll);
         Countdown.startCountdown(duration);
         Countdown.getCountdownStatus().then((result) => {
